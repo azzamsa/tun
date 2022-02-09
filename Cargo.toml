@@ -1,0 +1,33 @@
+[package]
+name = "tun"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.6.1"
+hyper = "0.14.23"
+tokio = { version = "1.23", features = ["macros", "rt-multi-thread"] }
+
+# Configurations
+dotenv = "0.15.0"
+url = "2.3"
+
+# Error
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Logging
+time = "0.3.17"
+tracing = "0.1.37"
+tracing-subscriber = { version = "0.3.16", features = ["env-filter", "time", "local-time"] }
+
+serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+# git hooks
+cargo-husky = { version = "1", features = ["user-hooks"] }
+
+[package.metadata.binstall]
+pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ version}-{ target }.tar.gz"
+bin-dir = "{ bin }{ binary-ext }"
+pkg-fmt = "tgz"
