@@ -1,8 +1,9 @@
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 use crate::meta::entities;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct Meta {
     pub build: String,
     pub version: String,
@@ -15,4 +16,9 @@ impl From<entities::Meta> for Meta {
             version: meta.version,
         }
     }
+}
+
+#[derive(Debug, Serialize, ToSchema)]
+pub struct MetaResponse {
+    pub data: Meta,
 }

@@ -8,6 +8,10 @@ axum = "0.6.1"
 hyper = "0.14.23"
 tokio = { version = "1.23", features = ["macros", "rt-multi-thread"] }
 
+# Swagger Documentation
+utoipa = { version = "2.4", features = ["axum_extras"] }
+utoipa-swagger-ui = { version = "3.0", features = ["axum"] }
+
 # Configurations
 dotenv = "0.15.0"
 url = "2.3"

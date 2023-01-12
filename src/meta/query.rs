@@ -4,9 +4,18 @@ use std::sync::Arc;
 use crate::context::ServerContext;
 use crate::meta::model;
 
+#[utoipa::path(
+    get,
+    path = "/meta",
+    responses(
+        (status = 200, description = "meta information", body = model::MetaResponse),
+    ),
+)]
 pub async fn get_meta(
     ctx: Extension<Arc<ServerContext>>,
-) -> Result<Json<model::Meta>, crate::Error> {
+) -> Result<Json<model::MetaResponse>, crate::Error> {
     let meta = ctx.meta_service.get_meta().await?;
-    Ok(Json(meta.into()))
+
+    let response = model::MetaResponse { data: meta.into() };
+    Ok(Json(response))
 }

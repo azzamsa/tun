@@ -1,7 +1,7 @@
-mod entities;
-mod model;
 mod service;
 
 // public
-pub use service::Service;
+pub mod entities;
+pub mod model;
 pub mod query;
+pub use service::Service;
