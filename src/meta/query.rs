@@ -11,7 +11,7 @@ use crate::meta::model;
         (status = 200, description = "meta information", body = model::MetaResponse),
     ),
 )]
-pub async fn get_meta(
+pub async fn meta(
     ctx: Extension<Arc<ServerContext>>,
 ) -> Result<Json<model::MetaResponse>, crate::Error> {
     let meta = ctx.meta_service.get_meta().await?;

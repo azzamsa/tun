@@ -16,7 +16,7 @@ pub async fn app() -> Result<Router, crate::Error> {
     #[derive(OpenApi)]
     #[openapi(
         paths(
-            meta::query::get_meta,
+            meta::query::meta,
         ),
         components(schemas(meta::model::Meta, meta::model::MetaResponse)),
         tags(
@@ -25,7 +25,7 @@ pub async fn app() -> Result<Router, crate::Error> {
     )]
     struct ApiDoc;
 
-    let mut app = Router::new().route("/meta", get(meta::query::get_meta));
+    let mut app = Router::new().route("/meta", get(meta::query::meta));
     if config.env != config::Env::Production {
         app = app.merge(SwaggerUi::new("/swagger").url("/api-doc/openapi.json", ApiDoc::openapi()));
     }
