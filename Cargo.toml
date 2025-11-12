@@ -1,7 +1,16 @@
 [package]
 name = "tun"
 version = "0.1.0"
-edition = "2021"
+authors = ["azzamsa <vcs@azzamsa.com>"]
+categories = ["web-programming"]
+edition = "2024"
+exclude = ["/README.md"]
+keywords = ["boilerplate"]
+license = "MIT"
+publish = false
+repository = "https://github.com/azzamsa/tun"
+rust-version = "1.91.1"
+description = "Rust REST Template"
 
 [dependencies]
 axum = "0.6.2"
