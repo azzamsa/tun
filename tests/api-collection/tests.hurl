@@ -4,7 +4,7 @@ GET http://127.0.0.1:8000/health
 HTTP/1.1 200
 [Asserts]
 status == 200
-jsonpath "$.data.status" == "running"
+jsonpath "$.status" == "running"
 
 # meta
 GET http://127.0.0.1:8000/meta
@@ -12,4 +12,4 @@ GET http://127.0.0.1:8000/meta
 HTTP/1.1 200
 [Asserts]
 status == 200
-jsonpath "$.data.build" == "unknown"
+jsonpath "$.build" == "unknown"

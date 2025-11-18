@@ -1,2 +1,0 @@
-mod schema;
-mod tests;
