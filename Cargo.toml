@@ -13,24 +13,24 @@ rust-version = "1.91.1"
 description = "Rust REST Template"
 
 [dependencies]
-axum = "0.6.2"
-hyper = "0.14.23"
-tokio = { version = "1.24", features = ["macros", "rt-multi-thread"] }
+axum = "0.8.7"
+hyper = "1.8.1"
+tokio = { version = "1.48", features = ["macros", "rt-multi-thread"] }
 
 # Swagger Documentation
-utoipa = { version = "2.4", features = ["axum_extras"] }
-utoipa-swagger-ui = { version = "3.0", features = ["axum"] }
+utoipa = { version = "5.4", features = ["axum_extras"] }
+utoipa-swagger-ui = { version = "9.0", features = ["axum"] }
 
 # Configurations
 dotenv = "0.15.0"
 
 # Error
-thiserror = "1.0"
+thiserror = "2.0"
 
 # Logging
-time = "0.3.17"
-tracing = "0.1.37"
-tracing-subscriber = { version = "0.3.16", features = ["env-filter", "time", "local-time"] }
+time = "0.3.44"
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.20", features = ["env-filter", "time", "local-time"] }
 
 serde = { version = "1.0", features = ["derive"] }
 
@@ -40,7 +40,9 @@ cargo-husky = { version = "1", features = ["user-hooks"] }
 
 anyhow = "1.0"
 serde_json = "1.0"
-tower = { version = "0.4", features = ["util"] }
+tower = { version = "0.5", features = ["util"] }
+
+http-body-util = "0.1.0"
 
 [package.metadata.binstall]
 pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ version}-{ target }.tar.gz"

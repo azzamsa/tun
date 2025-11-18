@@ -41,6 +41,12 @@ impl IntoResponse for Error {
     }
 }
 
+impl std::convert::From<std::io::Error> for Error {
+    fn from(err: std::io::Error) -> Self {
+        Error::Internal(err.to_string())
+    }
+}
+
 impl std::convert::From<std::net::AddrParseError> for Error {
     fn from(err: std::net::AddrParseError) -> Self {
         Error::Internal(err.to_string())
@@ -53,12 +59,6 @@ impl std::convert::From<std::env::VarError> for Error {
             std::env::VarError::NotPresent => Error::NotFound("env var not found".into()),
             _ => Error::Internal(err.to_string()),
         }
-    }
-}
-
-impl std::convert::From<hyper::Error> for Error {
-    fn from(err: hyper::Error) -> Self {
-        Error::Internal(err.to_string())
     }
 }
 

@@ -3,20 +3,21 @@ use axum::{
     body::Body,
     http::{Request, StatusCode},
 };
+use http_body_util::BodyExt;
 use tower::util::ServiceExt;
 
 use tun::{models::meta as model, routes::app};
 
 #[tokio::test]
-async fn meta() -> Result<()> {
+async fn health() -> Result<()> {
     let app = app().await?;
 
-    let request = Request::builder().uri("/meta").body(Body::empty())?;
-
-    let response = app.oneshot(request).await?;
+    let response = app
+        .oneshot(Request::builder().uri("/meta").body(Body::empty())?)
+        .await?;
     assert_eq!(response.status(), StatusCode::OK);
 
-    let body = hyper::body::to_bytes(response.into_body()).await?;
+    let body = response.into_body().collect().await?.to_bytes();
     let body: model::Meta = serde_json::from_slice(&body)?;
     assert_eq!(body.build, "unknown");
     Ok(())

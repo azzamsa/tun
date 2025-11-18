@@ -13,7 +13,7 @@ pub(crate) fn router() -> Router {
     get,
     path = "/health",
     responses(
-        (status = 200, description = "health information", body = Health),
+        (status = 200, description = "health information", body = model::Health),
     ),
 )]
 pub async fn health() -> Result<Json<model::Health>, crate::Error> {
