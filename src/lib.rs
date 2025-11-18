@@ -1,9 +1,9 @@
 pub mod config;
-pub mod context;
 mod errors;
-pub mod health;
+pub mod handlers;
 pub mod logger;
-pub mod meta;
+pub mod models;
 pub mod routes;
+pub mod services;
 
 pub use errors::Error;

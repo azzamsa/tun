@@ -1,30 +1,25 @@
 use std::sync::Arc;
 
-use axum::{Extension, Router, routing::get};
+use axum::Router;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::{config, context::ServerContext, health, meta};
+use crate::config;
+use crate::handlers;
+use crate::models;
 
 pub async fn app() -> Result<Router, crate::Error> {
     let config = Arc::new(config::Config::load()?);
 
-    let health_service = Arc::new(health::Service::new());
-    let meta_service = Arc::new(meta::Service::new());
-    let server_context = Arc::new(ServerContext {
-        health_service,
-        meta_service,
-    });
-
     #[derive(OpenApi)]
     #[openapi(
         paths(
-            meta::query::meta,
-            health::query::health,
+            handlers::meta::meta,
+            handlers::health::health,
         ),
         components(schemas(
-            meta::model::Meta, meta::model::MetaResponse,
-            health::model::Health, health::model::HealthResponse
+            models::meta::Meta,
+            models::health::Health,
         )),
         tags(
             (name = "Tun", description = "Rust REST API Boilerplate 🏗")
@@ -33,12 +28,12 @@ pub async fn app() -> Result<Router, crate::Error> {
     struct ApiDoc;
 
     let mut app = Router::new()
-        .route("/meta", get(meta::query::meta))
-        .route("/health", get(health::query::health));
+        .merge(handlers::health::router())
+        .merge(handlers::meta::router());
+
     if config.env != config::Env::Production {
         app = app.merge(SwaggerUi::new("/swagger").url("/api-doc/openapi.json", ApiDoc::openapi()));
     }
-    let app = app.layer(Extension(server_context));
 
     Ok(app)
 }
