@@ -130,3 +130,8 @@ up arg="":
     else
         cargo outdated --root-deps-only
     fi;
+
+[doc('Dependency analysis')]
+meta:
+    cargo +nightly udeps
+    cargo audit

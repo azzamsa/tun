@@ -22,7 +22,7 @@ utoipa = { version = "5.4", features = ["axum_extras"] }
 utoipa-swagger-ui = { version = "9.0", features = ["axum"] }
 
 # Configurations
-dotenv = "0.15.0"
+dotenvy = "0.15.7"
 
 # Error
 thiserror = "2.0"
