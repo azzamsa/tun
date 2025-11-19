@@ -8,14 +8,12 @@ use crate::Error;
 const ENV_APP_ENV: &str = "APP_ENV";
 const ENV_APP_BASE_URL: &str = "APP_BASE_URL";
 const ENV_HTTP_PORT: &str = "PORT";
-const ENV_UTC_OFFSET_HOUR: &str = "UTC_OFFSET_HOUR";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Config {
     pub env: Env,
     pub base_url: String,
     pub http: Http,
-    pub utc_offset_hour: i8,
 }
 
 const APP_ENV_DEV: &str = "dev";
@@ -83,9 +81,6 @@ impl Config {
             .parse::<Env>()?;
         let base_url =
             std::env::var(ENV_APP_BASE_URL).map_err(|_| env_not_found(ENV_APP_BASE_URL))?;
-        let utc_offset_hour =
-            std::env::var(ENV_UTC_OFFSET_HOUR).map_err(|_| env_not_found(ENV_UTC_OFFSET_HOUR))?;
-        let utc_offset_hour: i8 = utc_offset_hour.parse()?;
 
         // http
         let http_port = std::env::var(ENV_HTTP_PORT)
@@ -98,7 +93,6 @@ impl Config {
             base_url,
             env,
             http,
-            utc_offset_hour,
         };
 
         Ok(config)

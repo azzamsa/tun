@@ -30,7 +30,7 @@ dotenvy = "0.15.7"
 thiserror = "2.0"
 
 # Logging
-time = "0.3.44"
+# time = "0.3.44"
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter", "time", "local-time"] }
 
