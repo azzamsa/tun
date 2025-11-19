@@ -17,3 +17,9 @@ impl From<entity::user::Model> for User {
         }
     }
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+pub struct UpdateUser {
+    pub name: String,
+    pub full_name: Option<String>,
+}

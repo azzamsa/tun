@@ -1,6 +1,10 @@
 use std::sync::Arc;
 
-use axum::{Json, extract, http};
+use axum::{
+    Json,
+    extract::{Path, State},
+    http,
+};
 use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::app::ServerContext;
@@ -11,6 +15,7 @@ pub(crate) fn router(state: Arc<ServerContext>) -> OpenApiRouter {
     OpenApiRouter::new()
         .routes(routes!(users))
         .routes(routes!(user, delete))
+        .routes(routes!(update))
         .with_state(state)
 }
 
@@ -22,7 +27,7 @@ pub(crate) fn router(state: Arc<ServerContext>) -> OpenApiRouter {
     ),
 )]
 pub async fn users(
-    ctx: extract::State<Arc<ServerContext>>,
+    State(ctx): State<Arc<ServerContext>>,
 ) -> Result<Json<Vec<model::User>>, crate::Error> {
     let response = service::users(&ctx.db).await?;
     Ok(Json(response))
@@ -36,8 +41,8 @@ pub async fn users(
     ),
 )]
 pub async fn user(
-    ctx: extract::State<Arc<ServerContext>>,
-    extract::Path(id): extract::Path<i64>,
+    State(ctx): State<Arc<ServerContext>>,
+    Path(id): Path<i64>,
 ) -> Result<Json<model::User>, crate::Error> {
     let response = service::user(&ctx.db, id).await?;
     Ok(Json(response))
@@ -51,9 +56,27 @@ pub async fn user(
     ),
 )]
 pub async fn delete(
-    ctx: extract::State<Arc<ServerContext>>,
-    extract::Path(id): extract::Path<i64>,
+    State(ctx): State<Arc<ServerContext>>,
+    Path(id): Path<i64>,
 ) -> Result<http::StatusCode, crate::Error> {
     service::delete(&ctx.db, id).await?;
     Ok(http::StatusCode::NO_CONTENT)
+}
+
+#[axum::debug_handler]
+#[utoipa::path(
+    patch,
+    path = "/users/{id}",
+    request_body = model::UpdateUser,
+    responses(
+        (status = 200, description = "Update User", body = model::User),
+    ),
+)]
+pub async fn update(
+    State(ctx): State<Arc<ServerContext>>,
+    Path(id): Path<i64>,
+    Json(body): Json<model::UpdateUser>,
+) -> Result<Json<model::User>, crate::Error> {
+    let user = service::update(&ctx.db, id, body).await?;
+    Ok(Json(user))
 }

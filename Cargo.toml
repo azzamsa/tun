@@ -16,7 +16,8 @@ description = "Rust REST Template"
 members = [".", "entity", "migration"]
 
 [dependencies]
-axum = "0.8.7"
+# axum = "0.8.7"
+axum = { version = "0.8.7", features = ["macros"] }
 hyper = "1.8.1"
 tokio = { version = "1.48", features = ["macros", "rt-multi-thread"] }
 

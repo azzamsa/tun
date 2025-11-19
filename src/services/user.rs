@@ -18,3 +18,12 @@ pub async fn delete(db: &orm::DatabaseConnection, id: i64) -> Result<(), crate::
     repo::delete(db, id).await?;
     Ok(())
 }
+
+pub async fn update(
+    db: &orm::DatabaseConnection,
+    id: i64,
+    new_user: model::UpdateUser,
+) -> Result<model::User, crate::Error> {
+    let user = repo::update(db, id, new_user).await?;
+    Ok(user.into())
+}
