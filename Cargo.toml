@@ -35,6 +35,9 @@ thiserror = "2.0"
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter", "time", "local-time"] }
 
+# Database
+sea-orm = { version = "2.0.0-rc", features = ["sqlx-sqlite", "runtime-tokio-native-tls", "macros"] }
+
 serde = { version = "1.0", features = ["derive"] }
 
 [dev-dependencies]

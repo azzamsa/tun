@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use axum::Router;
+use sea_orm as orm;
 use utoipa::OpenApi;
 use utoipa_axum::router::OpenApiRouter;
 use utoipa_redoc::{Redoc, Servable};
@@ -9,7 +10,21 @@ use utoipa_swagger_ui::SwaggerUi;
 use crate::config;
 use crate::handlers;
 
-pub async fn router(config: Arc<config::Config>) -> Result<Router, crate::Error> {
+#[derive(Clone)]
+pub(crate) struct ServerContext {
+    config: Arc<config::Config>,
+    db: sea_orm::DatabaseConnection,
+}
+
+pub async fn create(
+    config: Arc<config::Config>,
+    db: orm::DatabaseConnection,
+) -> Result<Router, crate::Error> {
+    let server_context = ServerContext {
+        config: Arc::clone(&config),
+        db,
+    };
+
     #[derive(OpenApi)]
     #[openapi(
         tags(
@@ -19,6 +34,7 @@ pub async fn router(config: Arc<config::Config>) -> Result<Router, crate::Error>
     struct ApiDoc;
 
     let (mut router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
+        .with_state(server_context)
         .merge(handlers::health::router())
         .merge(handlers::meta::router())
         .split_for_parts();

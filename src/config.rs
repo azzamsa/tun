@@ -27,6 +27,10 @@ pub struct Config {
     /// - `80` or `443` behind a load balancer
     #[clap(long, env)]
     pub port: u16,
+
+    /// The connection URL for the database.
+    #[clap(long, env)]
+    pub database_url: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, ValueEnum)]
