@@ -21,6 +21,6 @@ async fn meta() -> Result<()> {
 
     let body = response.into_body().collect().await?.to_bytes();
     let body: model::Meta = serde_json::from_slice(&body)?;
-    assert_eq!(body.build, "unknown");
+    assert_eq!(body.build_hash, "unknown");
     Ok(())
 }
