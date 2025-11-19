@@ -29,8 +29,6 @@ jobs:
         run: just fmt-check
 
       - name: Run clippy
-        env:
-          SQLX_OFFLINE: true
         run: just lint
 
   msrv:
@@ -48,17 +46,7 @@ jobs:
 
       - name: Prepare the environment variables
         run: |
-          cp .example.env .env
-
-      - name: Prepare the database
-        env:
-          PGPASSWORD: secret
-        run: |
-          docker compose --file ./tests/compose.yml run --detach -p 5432:5432 --name postgres_db postgres_db
-          # Wait until the DB is up
-          docker exec postgres_db bash -c "until pg_isready; do sleep 1; done"
-          # Check DB version
-          docker exec postgres_db psql -h localhost -p 5432 -U gandalf --version
+          cp .sample.env .env
 
       - name: Show version information
         shell: bash
@@ -67,8 +55,6 @@ jobs:
           cargo --version
 
       - name: Run tests
-        env:
-          DATABASE_URL: postgres://gandalf:SpeakFriendAndEnter@localhost:5432/tin
         run: just test
 
   build:

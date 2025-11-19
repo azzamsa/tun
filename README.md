@@ -47,7 +47,7 @@ And, enjoy :)
 
 ```shell
 $ # Clone the repository
-
+$ cp .sample.env .env
 $ just dev  # See also `just setup`
 ```
 
