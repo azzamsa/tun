@@ -19,6 +19,8 @@ tokio = { version = "1.48", features = ["macros", "rt-multi-thread"] }
 
 # Swagger Documentation
 utoipa = { version = "5.4", features = ["axum_extras"] }
+utoipa-axum = "0.2.0"
+utoipa-redoc = { version = "6.0.0", features = ["axum"] }
 utoipa-swagger-ui = { version = "9.0", features = ["axum"] }
 
 # Configurations

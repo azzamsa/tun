@@ -1,12 +1,11 @@
-use axum::{Json, Router, routing};
+use axum::Json;
+use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::models::health as model;
 use crate::services::health as service;
 
-pub(crate) fn router() -> Router {
-    // By having each module responsible for setting up its own routing,
-    // it makes the root module a lot cleaner.
-    Router::new().route("/health", routing::get(health))
+pub(crate) fn router() -> OpenApiRouter {
+    OpenApiRouter::new().routes(routes!(health))
 }
 
 #[utoipa::path(

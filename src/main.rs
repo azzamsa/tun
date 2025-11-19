@@ -3,14 +3,14 @@ use std::{
     sync::Arc,
 };
 
-use tun::{config::Config, logger, routes::app};
+use tun::{config::Config, logger, router};
 
 #[tokio::main]
 async fn main() -> Result<(), tun::Error> {
     let config = Arc::new(Config::load()?);
     logger::init(&config)?;
 
-    let app = app().await?;
+    let app = router::router().await?;
 
     let host: IpAddr = config.base_url.parse()?;
     let port = config.http.port;

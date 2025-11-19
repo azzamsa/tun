@@ -6,11 +6,11 @@ use axum::{
 use http_body_util::BodyExt;
 use tower::util::ServiceExt;
 
-use tun::{models::meta as model, routes::app};
+use tun::{models::meta as model, router};
 
 #[tokio::test]
 async fn health() -> Result<()> {
-    let app = app().await?;
+    let app = router::router().await?;
 
     let response = app
         .oneshot(Request::builder().uri("/meta").body(Body::empty())?)
