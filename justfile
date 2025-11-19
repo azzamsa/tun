@@ -18,13 +18,13 @@ _default:
 [doc('Setup the repository')]
 setup:
     cargo binstall 'cargo-edit cargo-outdated dprint git-cliff bacon typos-cli'
-    cargo binstall 'sqlx-cli'
+    cargo install sea-orm-cli@^2.0.0-rc
 
 [doc('Tasks to make the code-base comply with the rules. Mostly used in git hooks')]
-comply: _doc-check _update-sqlx-schema fmt lint test
+comply: _doc-check fmt lint test
 
 [doc('Check if the repository comply with the rules and ready to be pushed')]
-check: _doc-check _check-sqlx-schema fmt-check lint test
+check: _doc-check fmt-check lint test
 
 [doc('Develop the app')]
 dev:
@@ -91,24 +91,15 @@ release-check level: check
 
 [doc('Setup the database schema.')]
 db-migrate:
-    sqlx database create
-    # sqlx migrate run # auto migration enabled
+    sea-orm-cli migrate up
 
 [doc('Reset the database schema')]
 db-reset:
-    sqlx database drop && sqlx database create
+    rm db.sqlite
 
 [doc('Check the documentation')]
 _doc-check:
     cargo doc --all-features --no-deps
-
-[doc('Update the SQLx schema')]
-_update-sqlx-schema:
-    cargo sqlx prepare -- --lib
-
-[doc('Check the SQLx schema')]
-_check-sqlx-schema:
-    cargo sqlx prepare --check -- --lib
 
 [doc('Prepare release hooks')]
 _release-prepare version:

@@ -4,6 +4,8 @@ use std::{
 };
 
 use clap::Parser;
+
+use migration::{Migrator, MigratorTrait};
 use tun::{app, config::Config, db, logger};
 
 #[tokio::main]
@@ -14,6 +16,7 @@ async fn main() -> Result<(), tun::Error> {
 
     // db
     let db = db::connect(Arc::clone(&config)).await?;
+    Migrator::up(&db, None).await?;
 
     // address
     let address = &SocketAddr::new(config.base_url.parse::<IpAddr>()?, config.port);

@@ -79,3 +79,9 @@ impl std::convert::From<std::num::ParseIntError> for Error {
         Error::InvalidArgument(err.to_string())
     }
 }
+
+impl std::convert::From<migration::DbErr> for Error {
+    fn from(err: migration::DbErr) -> Self {
+        Error::Internal(err.to_string())
+    }
+}
