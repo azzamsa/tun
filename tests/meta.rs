@@ -1,16 +1,21 @@
+use std::sync::Arc;
+
 use anyhow::Result;
 use axum::{
     body::Body,
     http::{Request, StatusCode},
 };
+use clap::Parser;
 use http_body_util::BodyExt;
 use tower::util::ServiceExt;
 
-use tun::{models::meta as model, router};
+use tun::{config::Config, models::meta as model, router};
 
 #[tokio::test]
 async fn health() -> Result<()> {
-    let app = router::router().await?;
+    dotenvy::dotenv().ok();
+    let config = Arc::new(Config::parse());
+    let app = router::router(config).await?;
 
     let response = app
         .oneshot(Request::builder().uri("/meta").body(Body::empty())?)

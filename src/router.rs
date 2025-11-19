@@ -9,9 +9,7 @@ use utoipa_swagger_ui::SwaggerUi;
 use crate::config;
 use crate::handlers;
 
-pub async fn router() -> Result<Router, crate::Error> {
-    let config = Arc::new(config::Config::load()?);
-
+pub async fn router(config: Arc<config::Config>) -> Result<Router, crate::Error> {
     #[derive(OpenApi)]
     #[openapi(
         tags(

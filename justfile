@@ -17,7 +17,7 @@ _default:
 [confirm('⚠️ This command will alter your system. Run recipe `setup`?')]
 [doc('Setup the repository')]
 setup:
-    cargo binstall 'cargo-edit cargo-nextest cargo-outdated dprint git-cliff bacon typos-cli'
+    cargo binstall 'cargo-edit cargo-outdated dprint git-cliff bacon typos-cli'
     cargo binstall 'sqlx-cli'
 
 [doc('Tasks to make the code-base comply with the rules. Mostly used in git hooks')]
@@ -74,11 +74,7 @@ lint:
 
 [doc('Test the codebase')]
 test:
-    cargo nextest run --config-file .nextest.toml
-
-[doc('Run the unit tests')]
-test-unit:
-    cargo nextest run --lib
+    cargo test
 
 [doc('Run the unit tests')]
 test-api:

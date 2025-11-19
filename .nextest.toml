@@ -1,3 +1,0 @@
-[[profile.default.overrides]]
-filter = 'package(tun)'
-threads-required = "num-test-threads"

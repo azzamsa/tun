@@ -44,7 +44,7 @@ jobs:
 
       - uses: taiki-e/install-action@v2
         with:
-          tool: just,nextest
+          tool: just
 
       - name: Prepare the environment variables
         run: |

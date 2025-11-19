@@ -1,104 +1,37 @@
-use std::{fmt, str::FromStr};
-
-use dotenvy;
+use clap::ValueEnum;
 use serde::{Deserialize, Serialize};
 
-use crate::Error;
-
-const ENV_APP_ENV: &str = "APP_ENV";
-const ENV_APP_BASE_URL: &str = "APP_BASE_URL";
-const ENV_HTTP_PORT: &str = "PORT";
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// Application configuration loaded from command-line flags or environment
+/// variables. Environment variables take precedence and are the recommended
+/// way to configure the service in production.
+/// See `.env.sample` in the repository root for details.
+#[derive(clap::Parser)]
 pub struct Config {
+    /// The deployment environment the application is running in.
+    ///
+    /// Common values include:
+    /// - `"dev"` for local development
+    /// - `"staging"` for staging/testing
+    /// - `"production"` for production deployments
+    #[clap(long, env)]
     pub env: Env,
+
+    /// The base URL used to construct absolute links or public-facing endpoints.
+    #[clap(long, env)]
     pub base_url: String,
-    pub http: Http,
+
+    /// The port the HTTP server should listen on.
+    ///
+    /// Examples:
+    /// - `3000` for local development
+    /// - `80` or `443` behind a load balancer
+    #[clap(long, env)]
+    pub port: u16,
 }
 
-const APP_ENV_DEV: &str = "dev";
-const APP_ENV_STAGING: &str = "staging";
-const APP_ENV_PRODUCTION: &str = "production";
-
-#[derive(Debug, Eq, PartialEq, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, ValueEnum)]
 pub enum Env {
     Dev,
     Staging,
     Production,
-}
-
-impl FromStr for Env {
-    type Err = Error;
-
-    fn from_str(s: &str) -> Result<Env, Error> {
-        match s {
-            APP_ENV_DEV => Ok(Env::Dev),
-            APP_ENV_STAGING => Ok(Env::Staging),
-            APP_ENV_PRODUCTION => Ok(Env::Production),
-            _ => Err(Error::InvalidArgument(format!(
-                "config: {} is not a valid env. Valid values are [{}, {}, {}]",
-                s,
-                Env::Dev,
-                Env::Staging,
-                Env::Production,
-            ))),
-        }
-    }
-}
-
-impl fmt::Display for Env {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Env::Dev => write!(f, "{}", APP_ENV_DEV),
-            Env::Staging => write!(f, "{}", APP_ENV_STAGING),
-            Env::Production => write!(f, "{}", APP_ENV_PRODUCTION),
-        }
-    }
-}
-
-/// Http contains the data specific to the HTTP(s) server
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Http {
-    pub port: u16,
-    // pub https_domain: String,
-    // pub https_port: u16,
-}
-const DEFAULT_HTTP_PORT: u16 = 8000;
-// const ENV_HTTPS_DOMAIN: &str = "HTTPS_DOMAIN";
-// const ENV_HTTPS_PORT: &str = "HTTPS_PORT";
-// const DEFAULT_HTTPS_CERT_DIRECTORY: &str = "certs";
-
-impl Config {
-    /// Load and validate the configuration from the environment.
-    /// If an error is found while parsing the values, or validating the data, an error is returned.
-    pub fn load() -> Result<Self, Error> {
-        dotenvy::dotenv().ok();
-
-        // app
-        let env = std::env::var(ENV_APP_ENV)
-            .map_err(|_| env_not_found(ENV_APP_ENV))?
-            .parse::<Env>()?;
-        let base_url =
-            std::env::var(ENV_APP_BASE_URL).map_err(|_| env_not_found(ENV_APP_BASE_URL))?;
-
-        // http
-        let http_port = std::env::var(ENV_HTTP_PORT)
-            .ok()
-            .map_or(Ok(DEFAULT_HTTP_PORT), |env_val| env_val.parse::<u16>())?;
-
-        let http = Http { port: http_port };
-
-        let config = Self {
-            base_url,
-            env,
-            http,
-        };
-
-        Ok(config)
-    }
-}
-
-fn env_not_found(var: &str) -> Error {
-    Error::NotFound(format!("config: {} env var not found", var))
 }
