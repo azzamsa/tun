@@ -17,6 +17,7 @@ pub fn init(config: &Config) -> Result<(), crate::Error> {
     let env_filter = filter::EnvFilter::builder()
         .with_default_directive(log_level.into())
         .from_env()?
+        .add_directive("sqlx::query=error".parse()?)
         .add_directive("hyper=warn".parse()?)
         .add_directive("reqwest=warn".parse()?);
 

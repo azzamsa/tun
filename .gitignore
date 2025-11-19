@@ -1,4 +1,6 @@
 /target
+# Yes, I am using ancient $EDITOR!
+rustfmt.toml
 
 *.sqlite
 .env
