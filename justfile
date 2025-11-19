@@ -120,16 +120,14 @@ _release-prepare version:
     just fmt
 
 [doc('Check dependencies health. Pass `--write` to upgrade dependencies')]
-[unix]
 up arg="":
-    #!/usr/bin/env bash
-    if [ "{{ arg }}" = "--write" ]; then
-        cargo upgrade --incompatible --recursive --verbose
-        cargo update
-        dprint config update
-    else
-        cargo outdated --root-deps-only
-    fi;
+    if [ "{{ arg }}" = "--write" ]; then \
+        cargo upgrade --incompatible --recursive --verbose && \
+        cargo update && \
+        dprint config update; \
+    else \
+        cargo outdated --root-deps-only; \
+    fi
 
 [doc('Dependency analysis')]
 meta:
