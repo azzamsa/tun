@@ -15,7 +15,7 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # it is a must!
           fetch-depth: 0
@@ -32,19 +32,19 @@ jobs:
           git checkout v${{ env.RELEASE_VERSION }}
 
       - name: Generate a changelog
-        uses: orhun/git-cliff-action@v2
+        uses: orhun/git-cliff-action@v4
         id: git-cliff
         with:
           config: .cliff.toml
           args: -vv --strip header --current
         env:
-          OUTPUT: CHANGELOG.md.tmp
+          OUTPUT: CHANGELOG.md
 
       - name: Print the changelog
         run: cat "${{ steps.git-cliff.outputs.changelog }}"
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
           name: "v${{ env.RELEASE_VERSION }}"
@@ -68,7 +68,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set the release version
         shell: bash
@@ -112,7 +112,7 @@ jobs:
           fi
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
           name: "v${{ env.RELEASE_VERSION }}"
