@@ -3,6 +3,7 @@ use utoipa::ToSchema;
 
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct User {
+    pub id: i64,
     pub name: String,
     pub full_name: Option<String>,
 }
@@ -10,6 +11,7 @@ pub struct User {
 impl From<entity::user::Model> for User {
     fn from(model: entity::user::Model) -> Self {
         Self {
+            id: model.id,
             name: model.name,
             full_name: model.full_name,
         }

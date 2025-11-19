@@ -6,15 +6,14 @@ use axum::{
     response::{IntoResponse, Response},
 };
 use serde::{Deserialize, Serialize};
+use thiserror::Error;
 
-#[derive(Debug, Clone, thiserror::Error)]
+#[derive(Debug, Clone, Error)]
 pub enum Error {
     #[error("Internal error")]
     Internal(String),
-
     #[error("{0}")]
     NotFound(String),
-
     #[error("{0}")]
     InvalidArgument(String),
 }

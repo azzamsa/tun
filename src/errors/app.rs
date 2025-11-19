@@ -2,6 +2,9 @@
 pub enum Error {
     // Other
     Internal,
+
+    // User
+    UserNotFound,
 }
 
 impl std::convert::From<Error> for crate::Error {
@@ -9,6 +12,9 @@ impl std::convert::From<Error> for crate::Error {
         match err {
             // Other
             Error::Internal => crate::Error::Internal(String::new()),
+
+            // User
+            Error::UserNotFound => crate::Error::NotFound(String::from("User not found.")),
         }
     }
 }

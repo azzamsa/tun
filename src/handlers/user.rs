@@ -11,6 +11,7 @@ use crate::services::user as service;
 pub(crate) fn router(state: Arc<ServerContext>) -> OpenApiRouter {
     OpenApiRouter::new()
         .routes(routes!(users))
+        .routes(routes!(user))
         .with_state(state)
 }
 
@@ -25,5 +26,20 @@ pub async fn users(
     ctx: extract::State<Arc<ServerContext>>,
 ) -> Result<Json<Vec<model::User>>, crate::Error> {
     let response = service::users(&ctx.db).await?;
+    Ok(Json(response))
+}
+
+#[utoipa::path(
+    get,
+    path = "/users/{id}",
+    responses(
+        (status = 200, description = "Get User", body = model::User),
+    ),
+)]
+pub async fn user(
+    ctx: extract::State<Arc<ServerContext>>,
+    extract::Path(id): extract::Path<i64>,
+) -> Result<Json<model::User>, crate::Error> {
+    let response = service::user(&ctx.db, id).await?;
     Ok(Json(response))
 }
