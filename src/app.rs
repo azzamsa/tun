@@ -7,19 +7,23 @@ use utoipa_axum::router::OpenApiRouter;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::config;
-use crate::handlers;
+use crate::{Error, config, handlers};
 
 #[derive(Clone)]
-pub(crate) struct ServerContext {
-    config: Arc<config::Config>,
-    db: sea_orm::DatabaseConnection,
+pub struct ServerContext {
+    pub config: Arc<config::Config>,
+    pub db: sea_orm::DatabaseConnection,
 }
 
 pub async fn create(
     config: Arc<config::Config>,
     db: orm::DatabaseConnection,
 ) -> Result<Router, crate::Error> {
+    // let server_context = Arc::new(ServerContext {
+    //     config: Arc::clone(&config),
+    //     db,
+    // });
+
     let server_context = ServerContext {
         config: Arc::clone(&config),
         db,
@@ -34,9 +38,10 @@ pub async fn create(
     struct ApiDoc;
 
     let (mut router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
-        .with_state(server_context)
+        .with_state(server_context.clone())
         .merge(handlers::health::router())
         .merge(handlers::meta::router())
+        .merge(handlers::user::router(server_context))
         .split_for_parts();
 
     if config.env != config::Env::Production {
@@ -46,4 +51,8 @@ pub async fn create(
     }
 
     Ok(router)
+}
+
+pub async fn db(config: Arc<config::Config>) -> Result<orm::DatabaseConnection, Error> {
+    Ok(orm::Database::connect(&config.database_url).await.unwrap())
 }

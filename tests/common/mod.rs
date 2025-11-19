@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
 use std::sync::Arc;
-use tun::{app, config::Config, db};
+use tun::{app, config::Config};
 
 pub async fn setup() -> Result<axum::Router> {
     // config
@@ -9,7 +9,7 @@ pub async fn setup() -> Result<axum::Router> {
     let config = Arc::new(Config::parse());
 
     // db
-    let db = db::connect(Arc::clone(&config)).await?;
+    let db = app::db(Arc::clone(&config)).await?;
 
     let app = app::create(config, db).await?;
     Ok(app)

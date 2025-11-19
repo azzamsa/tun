@@ -6,7 +6,7 @@ use std::{
 use clap::Parser;
 
 use migration::{Migrator, MigratorTrait};
-use tun::{app, config::Config, db, logger};
+use tun::{app, config::Config, logger};
 
 #[tokio::main]
 async fn main() -> Result<(), tun::Error> {
@@ -15,7 +15,7 @@ async fn main() -> Result<(), tun::Error> {
     let config = Arc::new(Config::parse());
 
     // db
-    let db = db::connect(Arc::clone(&config)).await?;
+    let db = app::db(Arc::clone(&config)).await?;
     Migrator::up(&db, None).await?;
 
     // address
