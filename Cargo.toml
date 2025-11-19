@@ -47,12 +47,6 @@ serde = { version = "1.0", features = ["derive"] }
 
 [dev-dependencies]
 anyhow = "1.0"
+http-body-util = "0.1.0"
 serde_json = "1.0"
 tower = { version = "0.5", features = ["util"] }
-
-http-body-util = "0.1.0"
-
-[package.metadata.binstall]
-pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ version}-{ target }.tar.gz"
-bin-dir = "{ bin }{ binary-ext }"
-pkg-fmt = "tgz"
