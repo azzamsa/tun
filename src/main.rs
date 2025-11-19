@@ -1,7 +1,4 @@
-use std::{
-    net::{IpAddr, SocketAddr},
-    sync::Arc,
-};
+use std::net::{IpAddr, SocketAddr};
 
 use clap::Parser;
 
@@ -12,10 +9,10 @@ use tun::{app, config::Config, logger};
 async fn main() -> Result<(), tun::Error> {
     // config
     dotenvy::dotenv().ok();
-    let config = Arc::new(Config::parse());
+    let config = Config::parse();
 
     // db
-    let db = app::db(Arc::clone(&config)).await?;
+    let db = app::db(&config).await?;
     Migrator::up(&db, None).await?;
 
     // address

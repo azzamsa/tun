@@ -11,23 +11,15 @@ use crate::{Error, config, handlers};
 
 #[derive(Clone)]
 pub struct ServerContext {
-    pub config: Arc<config::Config>,
+    pub config: config::Config,
     pub db: sea_orm::DatabaseConnection,
 }
 
 pub async fn create(
-    config: Arc<config::Config>,
+    config: config::Config,
     db: orm::DatabaseConnection,
 ) -> Result<Router, crate::Error> {
-    // let server_context = Arc::new(ServerContext {
-    //     config: Arc::clone(&config),
-    //     db,
-    // });
-
-    let server_context = ServerContext {
-        config: Arc::clone(&config),
-        db,
-    };
+    let server_context = Arc::new(ServerContext { config, db });
 
     #[derive(OpenApi)]
     #[openapi(
@@ -38,21 +30,19 @@ pub async fn create(
     struct ApiDoc;
 
     let (mut router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
-        .with_state(server_context.clone())
+        .with_state(Arc::clone(&server_context))
         .merge(handlers::health::router())
         .merge(handlers::meta::router())
         .merge(handlers::user::router(server_context))
         .split_for_parts();
 
-    if config.env != config::Env::Production {
-        router = router
-            .merge(SwaggerUi::new("/swagger").url("/api-docs/openapi.json", api.clone()))
-            .merge(Redoc::with_url("/redoc", api.clone()));
-    }
+    router = router
+        .merge(SwaggerUi::new("/swagger").url("/api-docs/openapi.json", api.clone()))
+        .merge(Redoc::with_url("/redoc", api.clone()));
 
     Ok(router)
 }
 
-pub async fn db(config: Arc<config::Config>) -> Result<orm::DatabaseConnection, Error> {
+pub async fn db(config: &config::Config) -> Result<orm::DatabaseConnection, Error> {
     Ok(orm::Database::connect(&config.database_url).await.unwrap())
 }
