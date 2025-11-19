@@ -36,36 +36,34 @@ run:
 
 [doc('Build the app')]
 build:
-    BUILD_HASH=$(git rev-parse --short=12 HEAD) BUILD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ) cargo build --release
+    BUILD_HASH=$(git rev-parse --short=12 HEAD) BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ) cargo build --release
 
 [doc('Build the container image')]
 image-build:
-    podman build -t tun:latest --build-arg BUILD_HASH=$(git rev-parse --short HEAD) --build-arg BUILD_TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)" .
+    podman build -t tun:latest --build-arg BUILD_HASH=$(git rev-parse --short HEAD) --build-arg BUILD_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)" .
 
 [doc('Run the container')]
-image-start service='':
-    podman compose {{ service }} -d
+image-up:
+    podman compose up -d
 
 [doc('Stop the container')]
-image-stop:
+image-down:
     podman compose down
 
 [doc('Restart the containers')]
 image-restart:
-    just image-stop
-    just image-run
+    just image-down
+    just image-up
 
 [doc('Format the codebase.')]
 fmt:
     cargo fmt --all
     dprint fmt
-    #hurlfmt tests/api-collection/**/*.hurl --in-place
 
 [doc('Check is the codebase properly formatted')]
 fmt-check:
     cargo fmt --all -- --check
     dprint check
-    #hurlfmt tests/api-collection/**/*.hurl --check
 
 [doc('Lint the codebase')]
 lint:
@@ -78,7 +76,7 @@ test:
 
 [doc('Run the unit tests')]
 test-api:
-    #./tests/api-collection/test.sh
+    ./tests/api-collection/test.sh
 
 [doc('Create a new release. Example `cargo-release release minor --tag-name v0.2.0`')]
 release level:

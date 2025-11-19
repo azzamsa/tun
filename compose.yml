@@ -1,0 +1,14 @@
+# This file is used for local environment
+services:
+
+  backend:
+    image: tun:latest
+    ports:
+      - 8000:8000
+    environment:
+      - ENV=dev
+      - BASE_URL=0.0.0.0
+      - PORT=8000
+      - DATABASE_URL=sqlite://app/db.sqlite?mode=rwc
+    volumes:
+      - ./_volume:/app

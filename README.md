@@ -17,7 +17,7 @@
 
 - [Axum](https://github.com/tokio-rs/axum): web framework.
 - [utoipa](https://github.com/juhaku/utoipa): automatically generates OpenAPI documentation.
-- [SQLx](https://github.com/launchbadge/sqlx): SQL toolkit.
+- [SeaORM](https://github.com/SeaQL/sea-orm): ORM toolkit.
 - [Tracing](https://github.com/tokio-rs/tracing): includes local timestamps.
 - [git-cliff](https://github.com/orhun/git-cliff): Changelog Generator.
 - Includes exhaustive integration tests.
@@ -35,7 +35,7 @@ When you use this template, try to follow the checklist to update your info prop
 - [ ] Change the package info in `Cargo.toml`
 - [ ] Change the application name:
   - [ ] Database name and other values in `.env`, `.example.env`, and other container related files.
-  - [ ] The OpenAPI info in `routes.rs`
+  - [ ] The OpenAPI info in `app.rs`
   - [ ] App name in `release.yml`
   - [ ] Project URL in `.cliff.toml`
   - [ ] App name in the import statements across Rust source and tests files.
@@ -48,7 +48,6 @@ And, enjoy :)
 ```shell
 $ # Clone the repository
 
-$ touch $SCHEMA_LOCATION # See .example.env
 $ just dev  # See also `just setup`
 ```
 
