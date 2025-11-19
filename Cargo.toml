@@ -50,3 +50,10 @@ anyhow = "1.0"
 http-body-util = "0.1.0"
 serde_json = "1.0"
 tower = { version = "0.5", features = ["util"] }
+
+[package.metadata.release]
+sign-commit = true
+sign-tag = true
+tag-message = "v{{version}}"
+pre-release-commit-message = "v{{version}}"
+pre-release-hook = ["just", "_release-prepare", "{{version}}"]
