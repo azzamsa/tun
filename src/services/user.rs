@@ -13,3 +13,8 @@ pub async fn user(db: &orm::DatabaseConnection, id: i64) -> Result<model::User, 
     let user = repo::user(db, id).await?;
     Ok(user.into())
 }
+
+pub async fn delete(db: &orm::DatabaseConnection, id: i64) -> Result<(), crate::Error> {
+    repo::delete(db, id).await?;
+    Ok(())
+}

@@ -16,3 +16,11 @@ pub async fn user(db: &orm::DatabaseConnection, id: i64) -> Result<user::Model, 
         None => Err(Error::UserNotFound.into()),
     }
 }
+
+pub async fn delete(db: &orm::DatabaseConnection, id: i64) -> Result<(), crate::Error> {
+    let result = user::Entity::delete_by_id(id).exec(db).await?;
+    match result.rows_affected {
+        1 => Ok(()),
+        _ => Err(Error::UserNotFound.into()),
+    }
+}
