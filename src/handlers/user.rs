@@ -5,19 +5,10 @@ use axum::{
     extract::{Path, State},
     http::StatusCode,
 };
-use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::app::ServerContext;
 use crate::models::user as model;
 use crate::services::user as service;
-
-pub(crate) fn router(state: Arc<ServerContext>) -> OpenApiRouter {
-    OpenApiRouter::new()
-        .routes(routes!(all))
-        .routes(routes!(one, delete))
-        .routes(routes!(update, create))
-        .with_state(state)
-}
 
 #[utoipa::path(
     get,

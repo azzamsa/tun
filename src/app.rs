@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::Router;
 use sea_orm as orm;
 use utoipa::OpenApi;
-use utoipa_axum::router::OpenApiRouter;
+use utoipa_axum::{router::OpenApiRouter, routes};
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
@@ -24,18 +24,28 @@ pub async fn create(db: orm::DatabaseConnection) -> Result<Router, crate::Error>
     )]
     struct ApiDoc;
 
-    let (mut router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
-        .with_state(Arc::clone(&server_context))
-        .merge(handlers::health::router())
-        .merge(handlers::meta::router())
-        .merge(handlers::user::router(server_context))
+    let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
+        .merge(router(server_context))
         .split_for_parts();
 
-    router = router
+    let router = router
         .merge(SwaggerUi::new("/swagger").url("/api-docs/openapi.json", api.clone()))
         .merge(Redoc::with_url("/redoc", api.clone()));
 
     Ok(router)
+}
+
+pub(super) fn router(server_context: Arc<ServerContext>) -> OpenApiRouter {
+    OpenApiRouter::new()
+        // health
+        .routes(routes!(handlers::health::health))
+        // meta
+        .routes(routes!(handlers::meta::meta))
+        // user
+        .routes(routes!(handlers::user::all))
+        .routes(routes!(handlers::user::one, handlers::user::delete))
+        .routes(routes!(handlers::user::create, handlers::user::update))
+        .with_state(server_context)
 }
 
 pub async fn db(config: &config::Config) -> Result<orm::DatabaseConnection, Error> {
