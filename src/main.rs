@@ -20,7 +20,7 @@ async fn main() -> Result<(), tun::Error> {
     let listener = tokio::net::TcpListener::bind(address).await?;
 
     logger::init(&config)?;
-    let app = app::create(config, db).await?;
+    let app = app::create(db).await?;
 
     tracing::info!("App started at `{}`", address);
     axum::serve(listener, app).await?;

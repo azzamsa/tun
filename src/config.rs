@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// variables. Environment variables take precedence and are the recommended
 /// way to configure the service in production.
 /// See `.env.sample` in the repository root for details.
-#[derive(clap::Parser, Clone)]
+#[derive(clap::Parser)]
 pub struct Config {
     /// The deployment environment the application is running in.
     ///

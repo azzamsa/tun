@@ -9,17 +9,12 @@ use utoipa_swagger_ui::SwaggerUi;
 
 use crate::{Error, config, handlers};
 
-#[derive(Clone)]
-pub struct ServerContext {
-    pub config: config::Config,
+pub(crate) struct ServerContext {
     pub db: sea_orm::DatabaseConnection,
 }
 
-pub async fn create(
-    config: config::Config,
-    db: orm::DatabaseConnection,
-) -> Result<Router, crate::Error> {
-    let server_context = Arc::new(ServerContext { config, db });
+pub async fn create(db: orm::DatabaseConnection) -> Result<Router, crate::Error> {
+    let server_context = Arc::new(ServerContext { db });
 
     #[derive(OpenApi)]
     #[openapi(

@@ -12,6 +12,6 @@ pub async fn setup() -> Result<axum::Router> {
     let db = app::db(&config).await?;
     Migrator::up(&db, None).await?;
 
-    let app = app::create(config, db).await?;
+    let app = app::create(db).await?;
     Ok(app)
 }
