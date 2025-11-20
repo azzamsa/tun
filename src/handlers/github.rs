@@ -1,14 +1,9 @@
 use std::sync::Arc;
 
 use axum::extract::State;
-use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::app::ServerContext;
 use crate::services::github as service;
-
-pub(crate) fn router(state: Arc<ServerContext>) -> OpenApiRouter {
-    OpenApiRouter::new().routes(routes!(zen)).with_state(state)
-}
 
 #[utoipa::path(
     get,

@@ -28,14 +28,11 @@ pub async fn create(
     )]
     struct ApiDoc;
 
-    let (mut router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
-        .merge(handlers::health::router())
-        .merge(handlers::meta::router())
-        .merge(handlers::user::router(Arc::clone(&server_context)))
-        .merge(handlers::github::router(Arc::clone(&server_context)))
+    let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
+        .merge(handlers::router(server_context))
         .split_for_parts();
 
-    router = router
+    let router = router
         .merge(SwaggerUi::new("/swagger").url("/api-docs/openapi.json", api.clone()))
         .merge(Redoc::with_url("/redoc", api.clone()));
 

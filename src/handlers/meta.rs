@@ -1,12 +1,7 @@
 use axum::Json;
-use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::models::meta as model;
 use crate::services::meta as service;
-
-pub(crate) fn router() -> OpenApiRouter {
-    OpenApiRouter::new().routes(routes!(meta))
-}
 
 #[utoipa::path(
     get,

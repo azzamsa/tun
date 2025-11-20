@@ -1,9 +1,3 @@
-use utoipa_axum::{router::OpenApiRouter, routes};
-
-pub(crate) fn router() -> OpenApiRouter {
-    OpenApiRouter::new().routes(routes!(health))
-}
-
 #[utoipa::path(
     get,
     path = "/health",
