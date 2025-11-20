@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(ToSchema, Deserialize, Serialize)]
 pub struct Meta {
     pub version: String,
     pub build_hash: String,

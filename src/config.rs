@@ -1,5 +1,4 @@
 use clap::ValueEnum;
-use serde::{Deserialize, Serialize};
 
 /// Application configuration loaded from command-line flags or environment
 /// variables. Environment variables take precedence and are the recommended
@@ -37,7 +36,7 @@ pub struct Config {
     pub github_url: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, ValueEnum)]
+#[derive(Clone, PartialEq, ValueEnum)]
 pub enum Env {
     Dev,
     Staging,

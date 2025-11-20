@@ -12,7 +12,7 @@ use crate::services::github as service;
         (status = 200, description = "Zen of Github", body = String),
     ),
 )]
-pub async fn zen(State(ctx): State<Arc<ServerContext>>) -> Result<String, crate::Error> {
+pub async fn zen(ctx: State<Arc<ServerContext>>) -> Result<String, crate::Error> {
     let response = service::zen(&ctx.config).await?;
     Ok(response)
 }

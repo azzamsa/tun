@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(ToSchema, Deserialize, Serialize)]
 pub struct User {
     pub id: i64,
     pub name: String,
@@ -18,13 +18,13 @@ impl From<entity::user::Model> for User {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(ToSchema, Deserialize, Serialize)]
 pub struct NewUser {
     pub name: String,
     pub full_name: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(ToSchema, Deserialize, Serialize)]
 pub struct UpdateUser {
     pub name: String,
     pub full_name: Option<String>,
