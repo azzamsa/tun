@@ -3,7 +3,7 @@
 <img src='docs/logo.png' width=250px />
 
 <br/>
-<h4>Rust REST Template 🏗️</h4>
+<h4>Rust REST Template 🛝️</h4>
 
 <a href="https://github.com/azzamsa/tun/actions/workflows/ci.yml">
     <img src="https://github.com/azzamsa/tun/actions/workflows/ci.yml/badge.svg" alt="Build status" />
