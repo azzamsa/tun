@@ -25,10 +25,9 @@ pub async fn create(db: orm::DatabaseConnection) -> Result<Router, crate::Error>
     struct ApiDoc;
 
     let (mut router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
-        .with_state(Arc::clone(&server_context))
         .merge(handlers::health::router())
         .merge(handlers::meta::router())
-        .merge(handlers::user::router(server_context))
+        .merge(handlers::user::router(Arc::clone(&server_context)))
         .split_for_parts();
 
     router = router
