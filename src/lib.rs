@@ -1,3 +1,4 @@
+mod drivers;
 mod errors;
 mod handlers;
 mod repos;

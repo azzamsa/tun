@@ -11,10 +11,14 @@ use crate::{Error, config, handlers};
 
 pub(crate) struct ServerContext {
     pub db: sea_orm::DatabaseConnection,
+    pub config: config::Config,
 }
 
-pub async fn create(db: orm::DatabaseConnection) -> Result<Router, crate::Error> {
-    let server_context = Arc::new(ServerContext { db });
+pub async fn create(
+    db: orm::DatabaseConnection,
+    config: config::Config,
+) -> Result<Router, crate::Error> {
+    let server_context = Arc::new(ServerContext { config, db });
 
     #[derive(OpenApi)]
     #[openapi(
@@ -28,6 +32,7 @@ pub async fn create(db: orm::DatabaseConnection) -> Result<Router, crate::Error>
         .merge(handlers::health::router())
         .merge(handlers::meta::router())
         .merge(handlers::user::router(Arc::clone(&server_context)))
+        .merge(handlers::github::router(Arc::clone(&server_context)))
         .split_for_parts();
 
     router = router

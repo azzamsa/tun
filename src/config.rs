@@ -31,6 +31,10 @@ pub struct Config {
     /// The connection URL for the database.
     #[clap(long, env)]
     pub database_url: String,
+
+    /// The URL for github API.
+    #[clap(long, env)]
+    pub github_url: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, ValueEnum)]

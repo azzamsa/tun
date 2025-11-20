@@ -73,14 +73,20 @@ impl std::convert::From<tracing_subscriber::filter::FromEnvError> for Error {
     }
 }
 
+impl std::convert::From<migration::DbErr> for Error {
+    fn from(err: migration::DbErr) -> Self {
+        Error::Internal(err.to_string())
+    }
+}
+
 impl std::convert::From<std::num::ParseIntError> for Error {
     fn from(err: std::num::ParseIntError) -> Self {
         Error::InvalidArgument(err.to_string())
     }
 }
 
-impl std::convert::From<migration::DbErr> for Error {
-    fn from(err: migration::DbErr) -> Self {
-        Error::Internal(err.to_string())
+impl std::convert::From<reqwest::Error> for Error {
+    fn from(err: reqwest::Error) -> Self {
+        Error::InvalidArgument(err.to_string())
     }
 }
