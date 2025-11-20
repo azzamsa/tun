@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2025-11-20
+
+### Features
+
+- Simpler approach to `router` ([da785d3](https://github.com/azzamsa/tun/commit/da785d3d07fb2f9bd269ca011d3dc6eb385404b0))
+
+  I prefer this approach.
+  - No more multiple `Arc::clone()`
+
+  I take it as Utoipa limitation(?)
+
+- Add github `zen` ([02ab743](https://github.com/azzamsa/tun/commit/02ab743d3db11c250e4984efcc0fd868fc3b9436))
+- Add `driver` boilerplate ([1105d32](https://github.com/azzamsa/tun/commit/1105d32a220f92a791365181e7f714b5f609a8a3))
+
+  Demonstrate how to interact with external services.
+
+### Bug fixes
+
+- Avoid duplicate `with_state()` ([ca891eb](https://github.com/azzamsa/tun/commit/ca891eb2fed9c9569c643384399931842a00f4e1))
+
 ## [0.2.0] - 2025-11-19
 
 ### Features
