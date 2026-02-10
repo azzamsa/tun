@@ -1,7 +1,6 @@
-use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
+use async_graphql::{InputObject, SimpleObject};
 
-#[derive(ToSchema, Deserialize, Serialize)]
+#[derive(Debug, SimpleObject)]
 pub struct User {
     pub id: i64,
     pub name: String,
@@ -18,14 +17,15 @@ impl From<entity::user::Model> for User {
     }
 }
 
-#[derive(ToSchema, Deserialize, Serialize)]
-pub struct NewUser {
+#[derive(Debug, InputObject)]
+pub struct CreateUser {
     pub name: String,
     pub full_name: Option<String>,
 }
 
-#[derive(ToSchema, Deserialize, Serialize)]
+#[derive(Debug, InputObject)]
 pub struct UpdateUser {
+    pub id: i64,
     pub name: String,
     pub full_name: Option<String>,
 }

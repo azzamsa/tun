@@ -4,3 +4,4 @@ rustfmt.toml
 
 *.sqlite
 .env
+*.graphql

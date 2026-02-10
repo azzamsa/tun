@@ -1,18 +1,17 @@
 use std::sync::Arc;
 
-use axum::extract::State;
+use async_graphql::{Context, FieldResult, Object};
 
 use crate::app::ServerContext;
 use crate::services::github as service;
 
-#[utoipa::path(
-    get,
-    path = "/zen",
-    responses(
-        (status = 200, description = "Zen of Github", body = String),
-    ),
-)]
-pub async fn zen(ctx: State<Arc<ServerContext>>) -> Result<String, crate::Error> {
-    let response = service::zen(&ctx.config).await?;
-    Ok(response)
+#[derive(Default)]
+pub struct GithubQuery;
+
+#[Object]
+impl GithubQuery {
+    pub async fn zen(&self, ctx: &Context<'_>) -> FieldResult<String> {
+        let ctx = ctx.data::<Arc<ServerContext>>()?;
+        Ok(service::zen(&ctx.config).await?)
+    }
 }

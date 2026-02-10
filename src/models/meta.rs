@@ -1,7 +1,6 @@
-use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
+use async_graphql::SimpleObject;
 
-#[derive(ToSchema, Deserialize, Serialize)]
+#[derive(Debug, SimpleObject)]
 pub struct Meta {
     pub version: String,
     pub build_hash: String,

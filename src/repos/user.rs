@@ -21,7 +21,7 @@ pub async fn one(db: &orm::DatabaseConnection, id: i64) -> Result<user::Model, c
 
 pub async fn create(
     db: &orm::DatabaseConnection,
-    new_user: model::NewUser,
+    new_user: model::CreateUser,
 ) -> Result<user::Model, crate::Error> {
     let user = user::ActiveModel {
         name: Set(new_user.name),

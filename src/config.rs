@@ -1,10 +1,12 @@
+use std::path::PathBuf;
+
 use clap::ValueEnum;
 
 /// Application configuration loaded from command-line flags or environment
 /// variables. Environment variables take precedence and are the recommended
 /// way to configure the service in production.
 /// See `.env.sample` in the repository root for details.
-#[derive(clap::Parser)]
+#[derive(clap::Parser, Clone)]
 pub struct Config {
     /// The deployment environment the application is running in.
     ///
@@ -26,6 +28,10 @@ pub struct Config {
     /// - `80` or `443` behind a load balancer
     #[clap(long, env)]
     pub port: u16,
+
+    /// The location for GraphQL schema.
+    #[clap(long, env)]
+    pub schema_location: Option<PathBuf>,
 
     /// The connection URL for the database.
     #[clap(long, env)]

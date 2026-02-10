@@ -17,7 +17,7 @@ _default:
 [confirm('⚠️ This command will alter your system. Run recipe `setup`?')]
 [doc('Setup the repository')]
 setup:
-    cargo binstall 'cargo-edit cargo-outdated dprint git-cliff bacon typos-cli'
+    cargo binstall cargo-edit cargo-outdated dprint git-cliff bacon typos-cli
     cargo install sea-orm-cli@^2.0.0-rc
 
 [doc('Tasks to make the code-base comply with the rules. Mostly used in git hooks')]

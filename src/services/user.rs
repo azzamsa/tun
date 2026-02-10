@@ -16,7 +16,7 @@ pub async fn one(db: &orm::DatabaseConnection, id: i64) -> Result<model::User, c
 
 pub async fn create(
     db: &orm::DatabaseConnection,
-    new_user: model::NewUser,
+    new_user: model::CreateUser,
 ) -> Result<model::User, crate::Error> {
     let user = repo::create(db, new_user).await?;
     Ok(user.into())
@@ -31,7 +31,8 @@ pub async fn update(
     Ok(user.into())
 }
 
-pub async fn delete(db: &orm::DatabaseConnection, id: i64) -> Result<(), crate::Error> {
+pub async fn delete(db: &orm::DatabaseConnection, id: i64) -> Result<model::User, crate::Error> {
+    let user = one(db, id).await?;
     repo::delete(db, id).await?;
-    Ok(())
+    Ok(user)
 }
