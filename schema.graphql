@@ -1,0 +1,68 @@
+input CreateUser {
+	name: String!
+	fullName: String
+}
+
+type Health {
+	status: String!
+}
+
+type Meta {
+	version: String!
+	buildHash: String!
+	buildDate: String!
+}
+
+type Mutation {
+	"""
+	Create a new user
+	"""
+	createUser(input: CreateUser!): User!
+	"""
+	Update an existing user
+	"""
+	updateUser(input: UpdateUser!): User!
+	"""
+	Delete a user
+	"""
+	deleteUser(id: Int!): User!
+}
+
+type Query {
+	meta: Meta!
+	health: Health!
+	zen: String!
+	"""
+	Get all users
+	"""
+	users: [User!]!
+	"""
+	Get a single user by ID
+	"""
+	user(id: Int!): User!
+}
+
+input UpdateUser {
+	id: Int!
+	name: String!
+	fullName: String
+}
+
+type User {
+	id: Int!
+	name: String!
+	fullName: String
+}
+
+"""
+Directs the executor to include this field or fragment only when the `if` argument is true.
+"""
+directive @include(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+"""
+Directs the executor to skip this field or fragment when the `if` argument is true.
+"""
+directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+schema {
+	query: Query
+	mutation: Mutation
+}
