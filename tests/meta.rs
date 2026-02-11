@@ -37,10 +37,10 @@ async fn meta() -> Result<()> {
 }
 
 mod schema {
-    cynic::use_schema!("tests/schema.graphql");
+    cynic::use_schema!("schema.graphql");
 }
 
-#[cynic::schema_for_derives(file = "tests/schema.graphql", module = "schema")]
+#[cynic::schema_for_derives(file = "schema.graphql", module = "schema")]
 pub mod queries {
     use super::schema;
 

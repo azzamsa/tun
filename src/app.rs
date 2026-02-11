@@ -79,11 +79,11 @@ async fn export_schema(config: &config::Config, schema: &AppSchema) -> Result<()
     if let Some(location) = &config.schema_location {
         fs::write(location, schema.sdl()).map_err(|_| {
             Error::InvalidArgument(format!(
-                "GraphQL schema location doesn't exists `{}`",
+                "GraphQL schema location doesn't exist: {}",
                 &location.display()
             ))
         })?;
-        tracing::info!("Wrote GraphQL schema to {}", location.display());
+        tracing::info!("Wrote GraphQL schema to: {}", location.display());
     }
     Ok(())
 }

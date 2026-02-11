@@ -22,7 +22,7 @@ async fn main() -> Result<(), tun::Error> {
     logger::init(&config)?;
     let app = app::create(db, config).await?;
 
-    tracing::info!("App started at `{}`", address);
+    tracing::info!("App started at {}", address);
     axum::serve(listener, app).await?;
 
     Ok(())
