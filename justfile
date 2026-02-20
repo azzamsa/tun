@@ -29,6 +29,7 @@ check: _doc-check fmt-check lint test
 [doc('Develop the app')]
 dev:
     bacon
+    just comply
 
 [doc('Run the app')]
 run:
@@ -91,7 +92,8 @@ release-check level: check
 
 [doc('Setup the database schema.')]
 db-migrate:
-    sea-orm-cli migrate up
+    diesel setup
+    diesel migration run
 
 [doc('Reset the database schema')]
 db-reset:

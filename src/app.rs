@@ -1,23 +1,19 @@
 use std::sync::Arc;
 
 use axum::Router;
-use sea_orm as orm;
 use utoipa::OpenApi;
 use utoipa_axum::router::OpenApiRouter;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::{Error, config, handlers};
+use crate::{config, db::DbPool, handlers};
 
 pub(crate) struct ServerContext {
-    pub db: sea_orm::DatabaseConnection,
+    pub db: DbPool,
     pub config: config::Config,
 }
 
-pub async fn create(
-    db: orm::DatabaseConnection,
-    config: config::Config,
-) -> Result<Router, crate::Error> {
+pub async fn create(db: DbPool, config: config::Config) -> Result<Router, crate::Error> {
     let server_context = Arc::new(ServerContext { config, db });
 
     #[derive(OpenApi)]
@@ -37,8 +33,4 @@ pub async fn create(
         .merge(Redoc::with_url("/redoc", api.clone()));
 
     Ok(router)
-}
-
-pub async fn db(config: &config::Config) -> Result<orm::DatabaseConnection, Error> {
-    Ok(orm::Database::connect(&config.database_url).await.unwrap())
 }

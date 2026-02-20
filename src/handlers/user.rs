@@ -31,7 +31,7 @@ pub async fn all(ctx: State<Arc<ServerContext>>) -> Result<Json<Vec<model::User>
 )]
 pub async fn one(
     ctx: State<Arc<ServerContext>>,
-    Path(id): Path<i64>,
+    Path(id): Path<i32>,
 ) -> Result<Json<model::User>, crate::Error> {
     let response = service::one(&ctx.db, id).await?;
     Ok(Json(response))
@@ -63,7 +63,7 @@ pub async fn create(
 )]
 pub async fn update(
     ctx: State<Arc<ServerContext>>,
-    Path(id): Path<i64>,
+    Path(id): Path<i32>,
     Json(body): Json<model::UpdateUser>,
 ) -> Result<Json<model::User>, crate::Error> {
     let user = service::update(&ctx.db, id, body).await?;
@@ -79,7 +79,7 @@ pub async fn update(
 )]
 pub async fn delete(
     ctx: State<Arc<ServerContext>>,
-    Path(id): Path<i64>,
+    Path(id): Path<i32>,
 ) -> Result<StatusCode, crate::Error> {
     service::delete(&ctx.db, id).await?;
     Ok(StatusCode::NO_CONTENT)
