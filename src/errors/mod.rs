@@ -73,12 +73,6 @@ impl std::convert::From<tracing_subscriber::filter::FromEnvError> for Error {
     }
 }
 
-impl std::convert::From<migration::DbErr> for Error {
-    fn from(err: migration::DbErr) -> Self {
-        Error::Internal(err.to_string())
-    }
-}
-
 impl std::convert::From<std::num::ParseIntError> for Error {
     fn from(err: std::num::ParseIntError) -> Self {
         Error::InvalidArgument(err.to_string())
@@ -88,5 +82,23 @@ impl std::convert::From<std::num::ParseIntError> for Error {
 impl std::convert::From<reqwest::Error> for Error {
     fn from(err: reqwest::Error) -> Self {
         Error::InvalidArgument(err.to_string())
+    }
+}
+
+impl std::convert::From<diesel::result::Error> for Error {
+    fn from(err: diesel::result::Error) -> Self {
+        Error::InvalidArgument(err.to_string())
+    }
+}
+
+impl std::convert::From<diesel::ConnectionError> for Error {
+    fn from(err: diesel::ConnectionError) -> Self {
+        Error::Internal(err.to_string())
+    }
+}
+
+impl std::convert::From<r2d2::Error> for Error {
+    fn from(err: r2d2::Error) -> Self {
+        Error::Internal(err.to_string())
     }
 }
