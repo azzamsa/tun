@@ -3,7 +3,6 @@
 set dotenv-load := true
 
 alias d := dev
-alias r := run
 alias f := fmt
 alias l := lint
 alias t := test
@@ -29,10 +28,7 @@ check: _doc-check fmt-check lint test
 [doc('Develop the app')]
 dev:
     bacon
-
-[doc('Run the app')]
-run:
-    cargo run
+    just comply
 
 [doc('Build the app')]
 build:
