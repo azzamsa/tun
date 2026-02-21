@@ -54,6 +54,8 @@ jobs:
           cargo --version
 
       - name: Run tests
+        env:
+          SQLX_OFFLINE: true
         run: just test
 
   build:
