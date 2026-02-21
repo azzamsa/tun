@@ -1,3 +1,6 @@
+> [!TIP]
+> Other variants available: [SeaORM](https://github.com/azzamsa/tun/tree/seaorm) · [Diesel](https://github.com/azzamsa/tun/tree/diesel) · [GraphQL](https://github.com/azzamsa/tun/tree/graphql).
+
 <div align="center">
 
 <img src='docs/logo.png' width=250px />
