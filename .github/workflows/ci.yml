@@ -45,8 +45,7 @@ jobs:
           tool: just
 
       - name: Prepare the environment variables
-        run: |
-          cp .sample.env .env
+        run: cp .sample.env .env
 
       - name: Show version information
         shell: bash
