@@ -2,8 +2,7 @@ use std::net::{IpAddr, SocketAddr};
 
 use clap::Parser;
 
-use migration::{Migrator, MigratorTrait};
-use tun::{app, config::Config, logger};
+use tun::{app, config::Config, db, logger};
 
 #[tokio::main]
 async fn main() -> Result<(), tun::Error> {
@@ -12,8 +11,8 @@ async fn main() -> Result<(), tun::Error> {
     let config = Config::parse();
 
     // db
-    let db = app::db(&config).await?;
-    Migrator::up(&db, None).await?;
+    let db = db::connect(&config).await?;
+    db::migrate(&db).await?;
 
     // address
     let address = &SocketAddr::new(config.base_url.parse::<IpAddr>()?, config.port);

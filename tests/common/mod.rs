@@ -1,7 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use migration::{Migrator, MigratorTrait};
-use tun::{app, config::Config};
+use tun::{app, config::Config, db};
 
 pub async fn setup() -> Result<axum::Router> {
     // config
@@ -9,8 +8,8 @@ pub async fn setup() -> Result<axum::Router> {
     let config = Config::parse();
 
     // db
-    let db = app::db(&config).await?;
-    Migrator::up(&db, None).await?;
+    let db = db::connect(&config).await?;
+    db::migrate(&db).await?;
 
     let app = app::create(db, config).await?;
     Ok(app)

@@ -1,17 +1,17 @@
 use entity::{prelude::*, *};
 
-use sea_orm as orm;
 use sea_orm::{ActiveModelTrait, EntityTrait, Set};
 
+use crate::db::Db;
 use crate::errors::app::Error;
 use crate::models::user as model;
 
-pub async fn all(db: &orm::DatabaseConnection) -> Result<Vec<user::Model>, crate::Error> {
+pub async fn all(db: &Db) -> Result<Vec<user::Model>, crate::Error> {
     let users = User::find().all(db).await?;
     Ok(users)
 }
 
-pub async fn one(db: &orm::DatabaseConnection, id: i64) -> Result<user::Model, crate::Error> {
+pub async fn one(db: &Db, id: i64) -> Result<user::Model, crate::Error> {
     let user = User::find_by_id(id).one(db).await?;
     match user {
         Some(user) => Ok(user),
@@ -19,10 +19,7 @@ pub async fn one(db: &orm::DatabaseConnection, id: i64) -> Result<user::Model, c
     }
 }
 
-pub async fn create(
-    db: &orm::DatabaseConnection,
-    new_user: model::NewUser,
-) -> Result<user::Model, crate::Error> {
+pub async fn create(db: &Db, new_user: model::NewUser) -> Result<user::Model, crate::Error> {
     let user = user::ActiveModel {
         name: Set(new_user.name),
         full_name: Set(new_user.full_name),
@@ -34,7 +31,7 @@ pub async fn create(
 }
 
 pub async fn update(
-    db: &orm::DatabaseConnection,
+    db: &Db,
     id: i64,
     new_user: model::UpdateUser,
 ) -> Result<user::Model, crate::Error> {
@@ -51,7 +48,7 @@ pub async fn update(
     Ok(updated)
 }
 
-pub async fn delete(db: &orm::DatabaseConnection, id: i64) -> Result<(), crate::Error> {
+pub async fn delete(db: &Db, id: i64) -> Result<(), crate::Error> {
     let result = User::delete_by_id(id).exec(db).await?;
     match result.rows_affected {
         1 => Ok(()),
