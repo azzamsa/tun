@@ -6,14 +6,14 @@ use utoipa_axum::router::OpenApiRouter;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::{config, db::DbPool, handlers};
+use crate::{config, db::Db, handlers};
 
 pub(crate) struct ServerContext {
-    pub db: DbPool,
+    pub db: Db,
     pub config: config::Config,
 }
 
-pub async fn create(db: DbPool, config: config::Config) -> Result<Router, crate::Error> {
+pub async fn create(db: Db, config: config::Config) -> Result<Router, crate::Error> {
     let server_context = Arc::new(ServerContext { config, db });
 
     #[derive(OpenApi)]

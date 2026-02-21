@@ -17,8 +17,8 @@
 
 - [Axum](https://github.com/tokio-rs/axum): web framework.
 - [utoipa](https://github.com/juhaku/utoipa): automatically generates OpenAPI documentation.
-- [SeaORM](https://github.com/SeaQL/sea-orm): ORM toolkit.
-- [Tracing](https://github.com/tokio-rs/tracing): includes local timestamps.
+- [SQLx](https://github.com/launchbadge/sqlx): SQL toolkit.
+- [Tracing](https://github.com/tokio-rs/tracing): logging.
 - [git-cliff](https://github.com/orhun/git-cliff): Changelog Generator.
 - Includes exhaustive integration tests.
   - Uses [Hurl](https://github.com/Orange-OpenSource/hurl) for API collection.

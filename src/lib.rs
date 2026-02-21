@@ -2,7 +2,6 @@ mod drivers;
 mod errors;
 mod handlers;
 mod repos;
-mod schema;
 mod services;
 
 pub mod app;

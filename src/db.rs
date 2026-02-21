@@ -1,22 +1,18 @@
-use diesel::r2d2::{self, ConnectionManager};
-use diesel::sqlite::SqliteConnection;
-use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
-
 use crate::config;
+use sqlx::sqlite::{SqlitePool, SqlitePoolOptions};
 
-pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
-pub type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
+pub type Db = SqlitePool;
 
-pub async fn connect(config: &config::Config) -> Result<DbPool, crate::Error> {
-    let manager = ConnectionManager::<SqliteConnection>::new(&config.database_url);
-    let pool = r2d2::Pool::builder().build(manager)?;
-
+pub async fn connect(config: &config::Config) -> Result<Db, crate::Error> {
+    let pool = SqlitePoolOptions::new()
+        .max_connections(5)
+        .connect(&config.database_url)
+        .await?;
     Ok(pool)
 }
 
-pub fn migrate(db: &DbPool) -> Result<(), crate::Error> {
-    let mut conn = db.get()?;
-    conn.run_pending_migrations(MIGRATIONS).map_err(|e| {
+pub async fn migrate(db: &Db) -> Result<(), crate::Error> {
+    sqlx::migrate!("./migrations").run(db).await.map_err(|e| {
         tracing::error!("Migration failed: {}", e);
         crate::Error::Internal(e.to_string())
     })?;

@@ -85,20 +85,17 @@ impl std::convert::From<reqwest::Error> for Error {
     }
 }
 
-impl std::convert::From<diesel::result::Error> for Error {
-    fn from(err: diesel::result::Error) -> Self {
-        Error::InvalidArgument(err.to_string())
+impl std::convert::From<sqlx::Error> for Error {
+    fn from(err: sqlx::Error) -> Self {
+        match err {
+            sqlx::Error::RowNotFound => Error::NotFound("not found".into()),
+            _ => Error::Internal(err.to_string()),
+        }
     }
 }
 
-impl std::convert::From<diesel::ConnectionError> for Error {
-    fn from(err: diesel::ConnectionError) -> Self {
-        Error::Internal(err.to_string())
-    }
-}
-
-impl std::convert::From<r2d2::Error> for Error {
-    fn from(err: r2d2::Error) -> Self {
+impl std::convert::From<sqlx::migrate::MigrateError> for Error {
+    fn from(err: sqlx::migrate::MigrateError) -> Self {
         Error::Internal(err.to_string())
     }
 }

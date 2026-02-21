@@ -9,7 +9,7 @@ pub async fn setup() -> Result<axum::Router> {
 
     // db
     let db = db::connect(&config).await?;
-    db::migrate(&db)?;
+    db::migrate(&db).await?;
 
     let app = app::create(db, config).await?;
     Ok(app)

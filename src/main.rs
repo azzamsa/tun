@@ -12,7 +12,7 @@ async fn main() -> Result<(), tun::Error> {
 
     // db
     let db = db::connect(&config).await?;
-    db::migrate(&db)?;
+    db::migrate(&db).await?;
 
     // address
     let address = &SocketAddr::new(config.base_url.parse::<IpAddr>()?, config.port);

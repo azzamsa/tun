@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE users SET name = ?, full_name = ? WHERE id = ? RETURNING *",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "name",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "full_name",
+        "ordinal": 2,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      false,
+      false,
+      true
+    ]
+  },
+  "hash": "525ba868984e37277539c23e2a7e0646bb475765ed88a3df8ec1859d87698358"
+}

@@ -3,7 +3,6 @@
 set dotenv-load := true
 
 alias d := dev
-alias r := run
 alias f := fmt
 alias l := lint
 alias t := test
@@ -21,19 +20,15 @@ setup:
     cargo install sea-orm-cli@^2.0.0-rc
 
 [doc('Tasks to make the code-base comply with the rules. Mostly used in git hooks')]
-comply: _doc-check fmt lint test
+comply: _doc-check _update-sqlx-schema fmt lint test
 
 [doc('Check if the repository comply with the rules and ready to be pushed')]
-check: _doc-check fmt-check lint test
+check: _doc-check _check-sqlx-schema fmt-check lint test
 
 [doc('Develop the app')]
 dev:
     bacon
     just comply
-
-[doc('Run the app')]
-run:
-    cargo run
 
 [doc('Build the app')]
 build:
@@ -92,16 +87,23 @@ release-check level: check
 
 [doc('Setup the database schema.')]
 db-migrate:
-    diesel setup
-    diesel migration run
+    sqlx database create
 
 [doc('Reset the database schema')]
 db-reset:
-    rm db.sqlite
+    sqlx database drop
 
 [doc('Check the documentation')]
 _doc-check:
     cargo doc --all-features --no-deps
+
+[doc('Update the SQLx schema')]
+_update-sqlx-schema:
+    cargo sqlx prepare -- --lib
+
+[doc('Check the SQLx schema')]
+_check-sqlx-schema:
+    cargo sqlx prepare --check -- --lib
 
 [doc('Prepare release hooks')]
 _release-prepare version:
