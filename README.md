@@ -24,6 +24,7 @@
   - Uses [Hurl](https://github.com/Orange-OpenSource/hurl) for API collection.
 - Utilizes fast and tiny image containers, leveraging [cargo-chef](https://github.com/LukeMathWalker/cargo-chef) and `scratch` or `distroless` images.
 - Implements GitHub Actions for CI and release workflows.
+  - uses [actionlint](https://github.com/rhysd/actionlint) & [actions-up](https://github.com/azat-io/actions-up) for better actions management.
 - Ensures consistent formatting using [dprint](https://github.com/dprint/dprint) for non-Rust files (Markdown, Dockerfiles, etc.).
 - Includes [cargo-release](https://github.com/crate-ci/cargo-release) workflow.
 
