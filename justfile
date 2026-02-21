@@ -120,3 +120,4 @@ up arg="":
 meta:
     cargo +nightly udeps
     cargo audit
+    pnpx actions-up
