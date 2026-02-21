@@ -1,0 +1,2 @@
+DELETE {{BASE_URL}}/users/1
+HTTP 204
