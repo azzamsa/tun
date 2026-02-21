@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2026-02-21
+
+### Features
+
+- Migrate to `sqlx` ([0fdc4a6](https://github.com/azzamsa/tun/commit/0fdc4a620f0b3f1dc5ab07c664176390eaed8544))
+- Migrate to `diesel` ([cb38eda](https://github.com/azzamsa/tun/commit/cb38edace776a7e83039ae42c1781f2b005e1746))
+
 ## [0.2.2] - 2025-11-20
 
 ### Features

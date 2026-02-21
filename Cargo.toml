@@ -1,6 +1,6 @@
 [package]
 name = "tun"
-version = "0.2.2"
+version = "0.3.0"
 authors = ["azzamsa <vcs@azzamsa.com>"]
 categories = ["web-programming"]
 edition = "2024"
