@@ -12,7 +12,7 @@ use tun::models::user as model;
 mod common;
 
 #[tokio::test]
-async fn user() -> Result<()> {
+async fn create_user() -> Result<()> {
     let app = common::setup().await?;
 
     let body = json::json!({
