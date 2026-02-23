@@ -13,6 +13,6 @@ use crate::services::github as service;
     ),
 )]
 pub async fn zen(ctx: State<Arc<ServerContext>>) -> Result<String, crate::Error> {
-    let response = service::zen(&ctx.config).await?;
+    let response = service::zen(&ctx.config, &ctx.http_client).await?;
     Ok(response)
 }

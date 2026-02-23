@@ -8,13 +8,21 @@ use utoipa_swagger_ui::SwaggerUi;
 
 use crate::{config, db::Db, handlers};
 
+pub type HttpClient = reqwest::Client;
+
 pub(crate) struct ServerContext {
-    pub db: Db,
     pub config: config::Config,
+    pub db: Db,
+    pub http_client: HttpClient,
 }
 
 pub async fn create(db: Db, config: config::Config) -> Result<Router, crate::Error> {
-    let server_context = Arc::new(ServerContext { config, db });
+    let http_client = reqwest::Client::new();
+    let server_context = Arc::new(ServerContext {
+        config,
+        db,
+        http_client,
+    });
 
     #[derive(OpenApi)]
     #[openapi(

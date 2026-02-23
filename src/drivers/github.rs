@@ -1,16 +1,17 @@
 use reqwest::Method;
 use serde_json as json;
 
-use crate::config::Config;
+use crate::{app::HttpClient, config::Config};
 
-pub async fn zen(config: &Config) -> Result<String, crate::Error> {
+pub async fn zen(client: &HttpClient, config: &Config) -> Result<String, crate::Error> {
     // don't add leading `/`
     let url = "zen";
-    let resp = request(config, Method::GET, url, None).await?;
+    let resp = request(client, config, Method::GET, url, None).await?;
     Ok(resp)
 }
 
 async fn request(
+    client: &HttpClient,
     config: &Config,
     method: Method,
     url: &str,
@@ -18,7 +19,6 @@ async fn request(
 ) -> Result<String, crate::Error> {
     let url = format!("{}/{}", config.github_url, url);
 
-    let client = reqwest::Client::new();
     let resp = client
         .request(method, &url)
         .header("Accept", "application/json")
