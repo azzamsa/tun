@@ -1,5 +1,5 @@
 > [!TIP]
-> Other variants available: [SeaORM](https://github.com/azzamsa/tun/tree/seaorm) · [Diesel](https://github.com/azzamsa/tun/tree/diesel) · [GraphQL](https://github.com/azzamsa/tun/tree/graphql).
+> Other variants available: [SeaORM](https://github.com/azzamsa/tun/tree/seaorm) · [Diesel](https://github.com/azzamsa/tun/tree/diesel) · [GraphQL](https://github.com/azzamsa/tun/tree/graphql) · [Hexagon](https://github.com/azzamsa/tun/tree/semi-hexagon) ⭐.
 
 <div align="center">
 
