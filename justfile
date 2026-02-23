@@ -17,7 +17,7 @@ _default:
 [doc('Setup the repository')]
 setup:
     cargo binstall 'cargo-edit cargo-outdated dprint git-cliff bacon typos-cli'
-    cargo install sea-orm-cli@^2.0.0-rc
+    cargo install sqlx-cli
 
 [doc('Tasks to make the code-base comply with the rules. Mostly used in git hooks')]
 comply: _doc-check _update-sqlx-schema fmt lint test
