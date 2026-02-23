@@ -62,7 +62,7 @@ fmt:
 fmt-check:
     cargo fmt --all -- --check
     dprint check
-    hurlfmt tests/api-collection/*.hurl --check
+    hurlfmt tests/api-collection/**/*.hurl --check
 
 [doc('Lint the codebase')]
 lint:
