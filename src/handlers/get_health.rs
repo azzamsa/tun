@@ -5,6 +5,6 @@
         (status = 200, description = "health status"),
     ),
 )]
-pub async fn health() -> Result<(), crate::Error> {
+pub async fn get_health() -> Result<(), crate::Error> {
     Ok(())
 }

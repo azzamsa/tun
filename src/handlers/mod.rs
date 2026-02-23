@@ -1,7 +1,11 @@
-pub mod github;
-pub mod health;
-pub mod meta;
-pub mod user;
+pub mod create_user;
+pub mod delete_user;
+pub mod find_user;
+pub mod find_users;
+pub mod get_health;
+pub mod get_meta;
+pub mod get_zen;
+pub mod update_user;
 
 use std::sync::Arc;
 
@@ -12,14 +16,14 @@ use crate::app::ServerContext;
 pub fn router(server_context: Arc<ServerContext>) -> OpenApiRouter {
     OpenApiRouter::new()
         // health
-        .routes(routes!(health::health))
+        .routes(routes!(get_health::get_health))
         // meta
-        .routes(routes!(meta::meta))
+        .routes(routes!(get_meta::get_meta))
         // user
-        .routes(routes!(user::all))
-        .routes(routes!(user::one, user::delete))
-        .routes(routes!(user::create, user::update))
+        .routes(routes!(find_users::find_users))
+        .routes(routes!(find_user::find_user, delete_user::delete_user))
+        .routes(routes!(create_user::create_user, update_user::update_user))
         // github
-        .routes(routes!(github::zen))
+        .routes(routes!(get_zen::get_zen))
         .with_state(server_context)
 }

@@ -6,23 +6,21 @@ use utoipa_axum::router::OpenApiRouter;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::{config, db::Db, handlers};
+use crate::{
+    config, db::Db, drivers::github::Github, handlers, repository::Repository, services::Service,
+};
 
 pub type HttpClient = reqwest::Client;
 
 pub(crate) struct ServerContext {
-    pub config: config::Config,
-    pub db: Db,
-    pub http_client: HttpClient,
+    pub service: Service,
 }
 
 pub async fn create(db: Db, config: config::Config) -> Result<Router, crate::Error> {
-    let http_client = reqwest::Client::new();
-    let server_context = Arc::new(ServerContext {
-        config,
-        db,
-        http_client,
-    });
+    let repo = Repository::new(db.clone());
+    let github = Github::new(config, reqwest::Client::new());
+    let service = Service::new(repo, github);
+    let server_context = Arc::new(ServerContext { service });
 
     #[derive(OpenApi)]
     #[openapi(
