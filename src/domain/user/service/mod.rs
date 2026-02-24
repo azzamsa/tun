@@ -16,3 +16,16 @@ impl Service {
         Self { repo }
     }
 }
+
+#[derive(Debug, Clone)]
+pub struct RegisterInput {
+    pub name: String,
+    pub full_name: Option<String>,
+}
+
+#[derive(Debug, Clone)]
+pub struct UpdateProfileInput {
+    pub id: i64,
+    pub name: String,
+    pub full_name: Option<String>,
+}

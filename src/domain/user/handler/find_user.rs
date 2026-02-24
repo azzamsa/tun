@@ -5,7 +5,7 @@ use axum::{
     extract::{Path, State},
 };
 
-use crate::{Error, app::ServerContext, domain::user::entities::User};
+use crate::{Error, app::ServerContext, domain::user::model::User};
 
 #[utoipa::path(
     get,
@@ -18,6 +18,6 @@ pub async fn find_user(
     ctx: State<Arc<ServerContext>>,
     Path(id): Path<i32>,
 ) -> Result<Json<User>, Error> {
-    let response = ctx.user_service.find_user(id).await?;
-    Ok(Json(response))
+    let user = ctx.user_service.find_user(id).await?;
+    Ok(Json(user.into()))
 }

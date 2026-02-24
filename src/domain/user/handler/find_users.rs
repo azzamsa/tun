@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::{Json, extract::State};
 
-use crate::{Error, app::ServerContext, domain::user::entities::User};
+use crate::{Error, app::ServerContext, domain::user::model::User};
 
 #[utoipa::path(
     get,
@@ -12,6 +12,7 @@ use crate::{Error, app::ServerContext, domain::user::entities::User};
     ),
 )]
 pub async fn find_users(ctx: State<Arc<ServerContext>>) -> Result<Json<Vec<User>>, Error> {
-    let response = ctx.user_service.find_users().await?;
-    Ok(Json(response))
+    let users = ctx.user_service.find_users().await?;
+    let users = users.into_iter().map(|user| user.into()).collect();
+    Ok(Json(users))
 }

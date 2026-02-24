@@ -1,4 +1,5 @@
 mod entities;
+mod model;
 mod service;
 
 pub mod handler;
