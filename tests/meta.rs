@@ -4,9 +4,8 @@ use axum::{
     http::{Request, StatusCode},
 };
 use http_body_util::BodyExt;
+use serde::{Deserialize, Serialize};
 use tower::util::ServiceExt;
-
-use tun::models::meta as model;
 
 mod common;
 
@@ -20,7 +19,13 @@ async fn meta() -> Result<()> {
     assert_eq!(response.status(), StatusCode::OK);
 
     let body = response.into_body().collect().await?.to_bytes();
-    let body: model::Meta = serde_json::from_slice(&body)?;
+    let body: Meta = serde_json::from_slice(&body)?;
     assert_eq!(body.build_hash, "unknown");
     Ok(())
+}
+
+// Integration test shouldn't see implementation details
+#[derive(Deserialize, Serialize)]
+pub struct Meta {
+    pub build_hash: String,
 }

@@ -1,16 +1,18 @@
+use std::sync::Arc;
+
 use reqwest::Method;
 use serde_json as json;
 
 use crate::{app::HttpClient, config::Config};
 
-pub struct Github {
-    config: Config,
+pub struct Gh {
+    config: Arc<Config>,
     client: HttpClient,
 }
 
-impl Github {
-    pub fn new(config: Config, client: HttpClient) -> Self {
-        Github { config, client }
+impl Gh {
+    pub fn new(config: Arc<Config>, client: HttpClient) -> Self {
+        Self { config, client }
     }
 
     pub async fn zen(&self) -> Result<String, crate::Error> {

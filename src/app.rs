@@ -6,21 +6,32 @@ use utoipa_axum::router::OpenApiRouter;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::{
-    config, db::Db, drivers::github::Github, handlers, repository::Repository, services::Service,
-};
+use crate::domain::{github, meta, user};
+use crate::router;
+use crate::{config, db::Db};
 
 pub type HttpClient = reqwest::Client;
 
-pub(crate) struct ServerContext {
-    pub service: Service,
+pub struct ServerContext {
+    pub meta_service: meta::Service,
+    pub user_service: user::Service,
+    pub github_service: github::Service,
 }
 
 pub async fn create(db: Db, config: config::Config) -> Result<Router, crate::Error> {
-    let repo = Repository::new(db.clone());
-    let github = Github::new(config, reqwest::Client::new());
-    let service = Service::new(repo, github);
-    let server_context = Arc::new(ServerContext { service });
+    let config = Arc::new(config);
+    // meta
+    let meta_service = meta::Service::new();
+    // meta
+    let github_service = github::Service::new(config);
+    // user
+    let user_service = user::Service::new(db);
+
+    let server_context = Arc::new(ServerContext {
+        meta_service,
+        user_service,
+        github_service,
+    });
 
     #[derive(OpenApi)]
     #[openapi(
@@ -31,7 +42,7 @@ pub async fn create(db: Db, config: config::Config) -> Result<Router, crate::Err
     struct ApiDoc;
 
     let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
-        .merge(handlers::router(server_context))
+        .merge(router::create(server_context))
         .split_for_parts();
 
     let router = router

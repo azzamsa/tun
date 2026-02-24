@@ -4,10 +4,9 @@ use axum::{
     http::{Method, Request, StatusCode},
 };
 use http_body_util::BodyExt;
+use serde::{Deserialize, Serialize};
 use serde_json as json;
 use tower::util::ServiceExt;
-
-use tun::models::user as model;
 
 mod common;
 
@@ -31,8 +30,15 @@ async fn create_user() -> Result<()> {
     assert_eq!(response.status(), StatusCode::CREATED);
 
     let body = response.into_body().collect().await?.to_bytes();
-    let body: model::User = serde_json::from_slice(&body)?;
+    let body: User = serde_json::from_slice(&body)?;
     assert_eq!(body.name, "Frodo");
 
     Ok(())
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct User {
+    pub id: i64,
+    pub name: String,
+    pub full_name: Option<String>,
 }
